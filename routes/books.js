@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Book = require("../models/book");
 const Author = require("../models/author");
-const { render } = require("ejs");
-
 const imageMimeTypes = ["image/jpeg", "image/png", "image/gif"];
 
 // All book route
@@ -69,10 +67,8 @@ async function renderNewPage(res, book, hasError = false) {
 }
 
 function saveCover(book, coverEncoded) {
-  if (coverEncoded == null) return;
-
+  if (coverEncoded == null || coverEncoded == "") return;
   const cover = JSON.parse(coverEncoded);
-  console.log(cover);
   if (cover != null && imageMimeTypes.includes(cover.type)) {
     book.coverImage = new Buffer.from(cover.data, "base64");
     book.coverImageType = cover.type;
